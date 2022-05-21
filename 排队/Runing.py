@@ -1,8 +1,11 @@
+import time
+
 import pygame
 import sys
 from People import People
 from Blocks import Block
 import random
+from Endline import Endline
 
 
 class Running:
@@ -22,6 +25,7 @@ class Running:
 
         self.people = People(self)
         self.blocks_1 = pygame.sprite.Group()
+        self.ends = pygame.sprite.Group()
         self.zz = 0
         self.z1 = 0
         self.z2 = 0
@@ -35,6 +39,11 @@ class Running:
         """开始跑酷事件"""
         while True:
             self._check_events()
+            if self.zz == 50:
+                time.sleep(1)
+                self._create_line()
+                self._create_line2()
+                self.zz = 51
             self.people.update()
             self._update_blocks()
             self._update_screen()
@@ -69,6 +78,28 @@ class Running:
             self.people.moving_up = False
         elif event.key == pygame.K_DOWN:
             self.people.moving_down = False
+
+    def _create_line(self):
+        end = Endline(self, 0)
+        end_width, end_height = end.rect.size
+        end.x = self.screen.get_width()
+        end.rect.x = end.x
+        end.rect.y = 50
+        self.ends.add(end)
+
+    def _create_line2(self):
+        for i in range(1, 4):
+            end = Endline(self, 1)
+            end_width, end_height = end.rect.size
+            end.x = self.screen.get_width()
+            end.rect.x = end.x
+            if i == 1:
+                end.rect.y = float(48 + (self.screen.get_rect().height - 100) / 3 - end_height)
+            elif i == 2:
+                end.rect.y = float(50 + (self.screen.get_rect().height - 100) / 3 * 2 - end_height)
+            elif i == 3:
+                end.rect.y = float(self.screen.get_rect().height - end_height - 50)
+            self.ends.add(end)
 
     def _create_block(self):
         """创建一个障碍物"""
@@ -122,11 +153,16 @@ class Running:
         """!!!!!!!!!!"""
 
     def _update_blocks(self):
-        """有外星人到达边缘时采取相应的措施。"""
+        """有障碍物到达边缘时采取相应的措施。"""
         self.blocks_1.update()
+        self.ends.update()
 
         if pygame.sprite.spritecollideany(self.people, self.blocks_1):
             self._people_hit()
+
+        if pygame.sprite.spritecollideany(self.people, self.ends):
+            self._people_hit()
+
         for block in self.blocks_1.copy():
             if block.check_edges():
                 self.blocks_1.remove(block)
@@ -150,12 +186,14 @@ class Running:
     def _update_screen(self):
         """更新屏幕"""
         self.screen.fill(self.bg_color)
-        self.screen.blit(self.image,self.image.get_rect())
+        self.screen.blit(self.image, self.image.get_rect())
         # 画三条赛道
         self._draw_line()
         self._draw_rect()
         self.people.blitme()
         self.blocks_1.draw(self.screen)
+        if self.zz == 51:
+            self.ends.draw(self.screen)
         pygame.display.flip()
 
 

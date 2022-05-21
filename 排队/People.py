@@ -29,7 +29,7 @@ class People(Sprite):
 
     def update(self):
         """人物移动"""
-        if self.moving_up and (self.rect.y - (self.moving / 10 * 9)) > 0:
+        if self.moving_up and (self.rect.y - (self.moving * 1.1)) > 0:
             self.y -= self.moving
         if self.moving_down and (self.rect.y + (self.moving / 10 * 9)) <= self.screen_rect.height:
             self.y += self.moving
