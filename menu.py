@@ -5,11 +5,15 @@ from settings import Settings
 from button import Button
 from message import Message
 import random
+from 排队.Runing import Running
+from 排队.People import People
+
 
 class Menu:
     def __init__(self):
         """初始化菜单信息"""
         pygame.init()
+        self.bg_color = (0xFF, 0xFF, 0xFF)
         self.settings = Settings()
         self.screen = self.settings.screen
         self.screen_rect = self.screen.get_rect()
@@ -24,8 +28,6 @@ class Menu:
         self.ok_button_rect = self.ok_button.get_rect()
         self.ok_button_rect.centerx = 1000
         self.ok_button_rect.y = 500
-
-
 
     def run_game(self):
         self._update_screen()
@@ -42,11 +44,13 @@ class Menu:
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_mouse_buttondown(mouse_pos)
 
-    def _check_mouse_buttondown(self,mouse_pos):
+    def _check_mouse_buttondown(self, mouse_pos):
         if self.change_button_rect.collidepoint(mouse_pos):
             self._update_screen()
             self._blit_screen()
-
+        elif self.ok_button_rect.collidepoint(mouse_pos):
+            self.run = Running()
+            self.run.run()
 
     def _blit_screen(self):
         # 设置背景图片
@@ -61,22 +65,17 @@ class Menu:
 
     def _update_screen(self):
         # 渲染信息
+        self.screen.fill(self.bg_color)
         i = random.randint(0, 4)
         restaurant = self.settings.restaurants1[i]
         restaurant1 = self.settings.restaurants2[i]
         food = random.choice(restaurant1)
 
         text_color = (255, 255, 255)
-        self.restaurant_message = Message(self,f"为你生成的食堂是:{restaurant}", text_color, self.screen_rect.centerx,250, 40)
-        self.food_message = Message(self,f"为你生成的菜品是:{food}", text_color, self.screen_rect.centerx, 350, 40)
+        self.restaurant_message = Message(self, f"为你生成的食堂是:{restaurant}", text_color, self.screen_rect.centerx, 250, 40)
+        self.food_message = Message(self, f"为你生成的菜品是:{food}", text_color, self.screen_rect.centerx, 350, 40)
 
         # 随机取出食堂和食堂中的食物
         self.restaurant_message.draw_message()
         self.food_message.draw_message()
-
-
-
-
-if __name__ == '__main__':
-    menu = Menu()
-    menu.run_game()
+        pygame.display.flip()

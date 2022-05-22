@@ -2,8 +2,8 @@ import time
 
 import pygame
 import sys
-from table import Table
-from table2 import Table2
+from 抢位置.table import Table
+from 抢位置.table2 import Table2
 import pygame.font
 import random
 
@@ -46,10 +46,11 @@ class Grab:
         while True:
             self._check_events()
             if self.time == 0:
-                if self.z < 20:
+                if self.z < 10:
                     time.sleep(1)
-                elif self.z >= 20:
-                    break
+                elif self.z >= 10:
+                    pygame.quit()
+                    sys.exit()
             self._update_screen()
 
     def _check_events(self):
@@ -172,7 +173,4 @@ class Grab:
         pygame.display.flip()
 
 
-if __name__ == '__main__':
-    # 创建游戏实例并运行游戏。
-    r = Grab()
-    r.run()
+

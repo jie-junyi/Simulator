@@ -8,10 +8,10 @@ class Endline(Sprite):
         super().__init__()
         self.screen = run_g.screen
         self.screen_rect = run_g.screen.get_rect()
-        self.image1 = pygame.image.load('images/直线 3@3x.png')
+        self.image1 = pygame.image.load('imagee/直线 3@3x.png')
         self.image1 = pygame.transform.scale(self.image1, (5, (self.screen.get_height() - 100)))
 
-        self.image2 = pygame.image.load('images/胜利@3x.png')
+        self.image2 = pygame.image.load('imagee/胜利@3x.png')
         self.image2 = pygame.transform.scale(self.image2, (50, 60))
 
         if c == 0:

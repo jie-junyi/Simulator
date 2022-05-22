@@ -11,7 +11,7 @@ class People(Sprite):
         self.screen = run_g.screen
         self.screen_rect = run_g.screen.get_rect()
 
-        self.image = pygame.image.load('images/轮椅.png')
+        self.image = pygame.image.load('imagee/轮椅.png')
         self.image = pygame.transform.scale(self.image, (50, 60))
 
         self.rect = self.image.get_rect()

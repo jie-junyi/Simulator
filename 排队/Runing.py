@@ -2,10 +2,12 @@ import time
 
 import pygame
 import sys
-from People import People
-from Blocks import Block
+from 排队.People import People
+from 排队.Blocks import Block
 import random
-from Endline import Endline
+from 排队.Endline import Endline
+
+import choose1
 
 
 class Running:
@@ -15,10 +17,10 @@ class Running:
         pygame.display.set_caption("排队之跑酷小游戏")
         # 设置背景色。
         self.bg_color = (0x63, 0x69, 0x86)
-        self.image = pygame.image.load('images/组 42@2x.png')
+        self.image = pygame.image.load('imagee/组 42@2x.png')
         self.image = pygame.transform.scale(self.image, (self.screen.get_width(), self.screen.get_height()))
 
-        self.image2 = pygame.image.load('images/矩形 4@3x.png')
+        self.image2 = pygame.image.load('imagee/矩形 4@3x.png')
         self.image2 = pygame.transform.scale(self.image2,
                                              (self.screen.get_width() - 100, (self.screen.get_height() - 100) / 3))
         self.image2.set_alpha(230)
@@ -39,11 +41,11 @@ class Running:
         """开始跑酷事件"""
         while True:
             self._check_events()
-            if self.zz == 50:
+            if self.zz == 10:
                 time.sleep(1)
                 self._create_line()
                 self._create_line2()
-                self.zz = 51
+                self.zz = 11
             self.people.update()
             self._update_blocks()
             self._update_screen()
@@ -60,7 +62,7 @@ class Running:
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
             # 判断事件触发情况
-            elif event.type == self.MYEVENT01 and self.zz < 50:
+            elif event.type == self.MYEVENT01 and self.zz < 10:
                 self._create_block()
 
     def _check_keydown_events(self, event):
@@ -148,9 +150,14 @@ class Running:
         self.blocks_1.add(block)
         self.zz += 1
 
-    def _people_hit(self):
+    def _people_hit(self, z):
         """人和障碍物碰撞的时候"""
-        """!!!!!!!!!!"""
+        if z == 0:
+            pygame.quit()
+            sys.exit()
+        elif z == 1:
+            ch = choose1.choose('images/suggest1.PNG')
+            ch.__run__()
 
     def _update_blocks(self):
         """有障碍物到达边缘时采取相应的措施。"""
@@ -158,10 +165,10 @@ class Running:
         self.ends.update()
 
         if pygame.sprite.spritecollideany(self.people, self.blocks_1):
-            self._people_hit()
+            self._people_hit(0)
 
         if pygame.sprite.spritecollideany(self.people, self.ends):
-            self._people_hit()
+            self._people_hit(1)
 
         for block in self.blocks_1.copy():
             if block.check_edges():
@@ -192,12 +199,7 @@ class Running:
         self._draw_rect()
         self.people.blitme()
         self.blocks_1.draw(self.screen)
-        if self.zz == 51:
+        if self.zz == 11:
             self.ends.draw(self.screen)
         pygame.display.flip()
 
-
-if __name__ == '__main__':
-    # 创建游戏实例并运行游戏。
-    r = Running()
-    r.run()

@@ -2,12 +2,14 @@ import pygame
 import sys
 from settings import Settings
 from button import Button
-from menu import Menu
+import menu
+
 
 class Restaurant:
     def __init__(self):
         """初始化基本信息"""
         pygame.init()
+        self.bg_color = (0xFF, 0xFF, 0xFF)
         self.settings = Settings()
         self.screen = self.settings.screen
         self.screen_rect = self.screen.get_rect()
@@ -56,17 +58,18 @@ class Restaurant:
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_mouse_buttondown(mouse_pos)
 
-    def _check_mouse_buttondown(self,mouse_pos):
+    def _check_mouse_buttondown(self, mouse_pos):
         if self.play_button_image_rect.collidepoint(mouse_pos):
-            self.menu = Menu()
+            self.menu = menu.Menu()
             self.menu.run_game()
 
     def _update_screen(self):
-        #self.screen.fill(self.settings.bg_color)
-        self.screen.blit(self.back_ground_image,self.back_ground_image_rect)
-        self.screen.blit(self.play_button_image,self.play_button_image_rect)
-        self.screen.blit(self.decorate_image,self.decorate_image_rect)
-        self.screen.blit(self.question_image,self.question_image_rect)
+        self.screen.fill(self.bg_color)
+        self.screen.blit(self.back_ground_image, self.back_ground_image_rect)
+        self.screen.blit(self.play_button_image, self.play_button_image_rect)
+        self.screen.blit(self.decorate_image, self.decorate_image_rect)
+        self.screen.blit(self.question_image, self.question_image_rect)
+        pygame.display.flip()
 
 if __name__ == '__main__':
     res = Restaurant()

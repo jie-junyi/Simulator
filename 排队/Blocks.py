@@ -13,7 +13,7 @@ class Block(Sprite):
         self.screen = run_g.screen
         self.screen_rect = run_g.screen.get_rect()
 
-        block = {1: 'images/多人-人群@2x.png', 2: 'images/多人-人群@3x.png', 3: 'images/大型障碍物@3x.png', 4: 'images/摩托车@3x.png'}
+        block = {1: 'imagee/多人-人群@2x.png', 2: 'imagee/多人-人群@3x.png', 3: 'imagee/大型障碍物@3x.png', 4: 'imagee/摩托车@3x.png'}
 
         filename = block[random.randint(1, 4)]
         self.image = pygame.image.load(filename)
